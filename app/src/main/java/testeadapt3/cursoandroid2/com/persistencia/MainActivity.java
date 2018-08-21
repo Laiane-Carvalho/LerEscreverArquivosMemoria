@@ -2,9 +2,12 @@ package testeadapt3.cursoandroid2.com.persistencia;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -230,5 +233,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void toastMessage(String m) {
         Toast.makeText( getApplicationContext(), m, Toast.LENGTH_LONG ).show();
+    }
+
+    public void abrirPreferencias(View view) {
+        startActivity( new Intent( this,ConfigActivity.class ) );
+    }
+
+    public void lerPreferencias(View view) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences( this );//aqui estamos obtendo a instancia sharedPreferende pelo metodo getDefaultSharedPrerecence
+        String cidade = prefs.getString(  //obtendo valores das preferencias
+                getString( R.string.pref_cidade ),
+                getString( R.string.pref_cidade_default ));
+
+        String redeSocial = prefs.getString(
+                getString( R.string.pref_rede_social ),
+                getString( R.string.pref_rede_social_default ));
+
+        boolean mensagens = prefs.getBoolean(
+                getString( R.string.pref_mensagens) ,false);
+        String msg = String.format( "%s = %s\n%s = %s\n%s = %s",
+                getString( R.string.titulo_cidade ),cidade,
+                getString( R.string.titulo_rede_social ),redeSocial,
+                getString( R.string.titulo_mensagens ),String.valueOf( mensagens ));
+        toastMessage( msg );
     }
 }

@@ -1,0 +1,58 @@
+package testeadapt3.cursoandroid2.com.persistencia;
+
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.EditTextPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
+
+/**
+ * Created by laianeoliveira on 21/08/18.
+ */
+
+public class ConfigFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
+
+    EditTextPreference mPrefCidade;
+    ListPreference mPrefRedeSocial;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate( savedInstanceState );
+        addPreferencesFromResource( R.xml.preferences );//adicionar/interligar o xml de preferencias a classe.
+
+        mPrefCidade = (EditTextPreference)
+                findPreference( getString( R.string.pref_cidade ) );
+        mPrefRedeSocial = (ListPreference)
+                findPreference( getString( R.string.pref_rede_social ) );
+        preencherSumario( mPrefCidade );
+        preencherSumario( mPrefRedeSocial );
+
+
+    }
+
+    private void preencherSumario(Preference preference) {
+        preference.setOnPreferenceChangeListener( this );//aqui informamos que quando o valor dessa preferencia mudar(for alterado) essa classe(this) sera chamada.
+        SharedPreferences pref =
+                PreferenceManager.getDefaultSharedPreferences( getActivity() );
+        Object value = pref.getString( preference.getKey(), "" );
+        onPreferenceChange( preference, value );
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {//atualizamos o sumario da preferencia com seu valor., quando o fragmnet é criado ou quando as preferencias sao alteradas
+        String stringValue = newValue.toString();
+        if (preference.equals( mPrefRedeSocial )) {
+            int index = mPrefRedeSocial.findIndexOfValue( stringValue );
+            if (index >= 0) {
+                mPrefRedeSocial.setSummary(
+                        mPrefRedeSocial.getEntries()[index] );
+            }
+        }else if (preference.equals( mPrefCidade )){
+            mPrefCidade.setSummary( stringValue );
+        }
+        return true;
+    }
+}

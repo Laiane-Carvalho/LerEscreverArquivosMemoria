@@ -62,5 +62,22 @@
         android:text="@null"
         android:id="@+id/textTexto"
         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Abrir preferencias"
+            android:onClick="abrirPreferencias"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ler preferencias"
+            android:onClick="lerPreferencias"/>
+    </LinearLayout>
 
 </LinearLayout>
